@@ -19,7 +19,7 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Task(models.Model):
-    title = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100)
     description = models.TextField()
     categories = models.ManyToManyField(Category, related_name='tasks', blank=True)
     status = models.CharField(max_length=100, choices=Status.choices, default=Status.NEW)
@@ -33,8 +33,7 @@ class Task(models.Model):
         db_table = 'task_manager_task'
         ordering = ['-created_at']
         verbose_name = 'Task'
-        #стоит ли оставлять эту строчку, если в поле title есть unique
-        # constraints = [models.UniqueConstraint(fields=['title', 'deadline'], name='unique_title_deadline')]
+        constraints = [models.UniqueConstraint(fields=['title', 'deadline'], name='unique_title_deadline')]
 
 
 
