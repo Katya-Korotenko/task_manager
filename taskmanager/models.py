@@ -23,7 +23,7 @@ class Task(models.Model):
     description = models.TextField()
     categories = models.ManyToManyField(Category, related_name='tasks', blank=True)
     status = models.CharField(max_length=100, choices=Status.choices, default=Status.NEW)
-    deadline = models.DateField()
+    deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
