@@ -1,13 +1,15 @@
+from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, filters
+from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils import timezone
 from django.db.models import Count
 
 
-from .models import Task, SubTask
-from .serializers import TaskSerializer, SubTaskSerializer
+from .models import Task, SubTask, Category
+from .serializers import TaskSerializer, SubTaskSerializer, CategoryCreateSerializer
 from .pagination import SubTaskPagination
 
 
@@ -70,3 +72,13 @@ class SubTaskDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
 
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategoryCreateSerializer
+
+    @action(detail=True, methods=['get'])
+    def count_tasks(self, request, pk=None):
+        category = self.get_object()
+        count = category.tasks.count()
+        return Response({'task_count': count})
