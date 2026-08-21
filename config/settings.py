@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'taskmanager',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'taskmanager.pagination.GlobalCursorPagination',
+    'PAGE_SIZE': 6,
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,7 +83,52 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+            'console': {
+                'level': 'INFO',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose',
+            },
+            'http_file': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': BASE_DIR / 'logs' / 'http_logs.log',
+                'formatter': 'verbose',
+            },
+            'db_file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': BASE_DIR / 'logs' / 'db_logs.log',
+                'formatter': 'verbose',
+            },
+        },
+        'loggers': {
+                'django.server': {
+                    'handlers': ['console'],
+                    'level': 'INFO',
+                    'propagate': False,
+                },
+                'django.request': {
+                    'handlers': ['http_file'],
+                    'level': 'INFO',
+                    'propagate': False,
+                },
+                'django.db.backends': {
+                    'handlers': ['db_file'],
+                    'level': 'DEBUG',
+                    'propagate': False,
+                },
+            },
+        }
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 

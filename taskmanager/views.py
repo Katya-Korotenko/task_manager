@@ -10,7 +10,6 @@ from django.db.models import Count
 
 from .models import Task, SubTask, Category
 from .serializers import TaskSerializer, SubTaskSerializer, CategoryCreateSerializer
-from .pagination import SubTaskPagination
 
 
 class TaskListCreateView(generics.ListCreateAPIView):
@@ -60,7 +59,6 @@ class TaskStatsView(APIView):
 class SubTaskListCreateView(generics.ListCreateAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
-    pagination_class = SubTaskPagination
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['status', 'deadline']
