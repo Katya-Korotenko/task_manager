@@ -49,8 +49,11 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ),
     'DEFAULT_PAGINATION_CLASS': 'taskmanager.pagination.GlobalCursorPagination',
-    'PAGE_SIZE': 6,
+    'PAGE_SIZE': 5,
 }
 
 MIDDLEWARE = [
