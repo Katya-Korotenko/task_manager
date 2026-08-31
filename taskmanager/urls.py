@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import TaskListCreateView, TaskDetailView, TaskStatsView, SubTaskListCreateView, SubTaskDetailUpdateDeleteView, CategoryViewSet
+from .views import TaskListCreateView, MyTasksView, TaskDetailView, TaskStatsView, SubTaskListCreateView, SubTaskDetailUpdateDeleteView, CategoryViewSet
 
 
 router = DefaultRouter()
@@ -12,6 +12,7 @@ router.register('categories', CategoryViewSet, basename='category')
 
 urlpatterns = [
     path('tasks/', TaskListCreateView.as_view(), name='task-list-create'),
+    path('tasks/my/', MyTasksView.as_view(), name='my-tasks'),
     path('tasks/detail/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
     path('tasks/stats/', TaskStatsView.as_view(), name='task-stats'),
     path('subtask/list/', SubTaskListCreateView.as_view(), name='subtask-list'),
