@@ -6,10 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils import timezone
 from django.db.models import Count
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 
 
 from .models import Task, SubTask, Category
+from .permissions import IsOwnerOrReadOnly
 from .serializers import TaskSerializer, SubTaskSerializer, CategoryCreateSerializer
 
 
@@ -32,6 +34,9 @@ class TaskListCreateView(generics.ListCreateAPIView):
         'sunday': 1,
     }
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def get_queryset(self):
         queryset = Task.objects.all()
         day = self.request.query_params.get('day')
@@ -43,7 +48,7 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TaskSerializer
 
 class TaskStatsView(APIView):
@@ -69,10 +74,13 @@ class SubTaskListCreateView(generics.ListCreateAPIView):
     search_fields = ['title', 'description']
     ordering_fields = ['created_at']
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class SubTaskDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubTask.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = SubTaskSerializer
 
 
@@ -86,3 +94,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
         category = self.get_object()
         count = category.tasks.count()
         return Response({'task_count': count})
+
+class MyTasksView(generics.ListAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user)
