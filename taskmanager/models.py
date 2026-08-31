@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Status(models.TextChoices):
@@ -34,6 +35,8 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Task(models.Model):
+
+    owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='tasks_owned')
     title = models.CharField(max_length=100)
     description = models.TextField()
     categories = models.ManyToManyField(Category, related_name='tasks', blank=True)
@@ -53,11 +56,13 @@ class Task(models.Model):
 
 
 class SubTask(models.Model):
+
+    owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='subtasks_owned')
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='subtasks')
     status = models.CharField(max_length=100, choices=Status.choices, default=Status.NEW)
-    deadline = models.DateField()
+    deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

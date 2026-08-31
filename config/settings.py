@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'taskmanager',
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {

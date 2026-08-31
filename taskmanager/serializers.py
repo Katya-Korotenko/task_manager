@@ -6,7 +6,8 @@ from .models import Task, SubTask, Category
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline']
+        fields = ['id', 'title', 'description', 'owner', 'status', 'deadline']
+        read_only_fields = ['owner']
 
 class TaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +26,8 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubTask
-        fields = ['id', 'title', 'description', 'task', 'status', 'deadline', 'created_at']
+        fields = ['id', 'title', 'description', 'owner', 'task', 'status', 'deadline', 'created_at']
+        read_only_fields = ['owner']
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,4 +53,5 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline', 'created_at', 'subtasks']
+        fields = ['id', 'title', 'owner', 'description', 'status', 'deadline', 'created_at', 'subtasks']
+        read_only_fields = ['owner']
