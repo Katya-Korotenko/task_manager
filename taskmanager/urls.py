@@ -3,8 +3,8 @@ from rest_framework.routers import DefaultRouter
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import TaskListCreateView, MyTasksView, TaskDetailView, TaskStatsView, SubTaskListCreateView, SubTaskDetailUpdateDeleteView, CategoryViewSet
-
+from .views import TaskListCreateView, MyTasksView, TaskDetailView, TaskStatsView, SubTaskListCreateView, \
+    SubTaskDetailUpdateDeleteView, CategoryViewSet, RegisterView, LoginView, RefreshTokenView, LogoutView
 
 router = DefaultRouter()
 router.register('categories', CategoryViewSet, basename='category')
@@ -16,9 +16,12 @@ urlpatterns = [
     path('tasks/detail/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
     path('tasks/stats/', TaskStatsView.as_view(), name='task-stats'),
     path('subtask/list/', SubTaskListCreateView.as_view(), name='subtask-list'),
-
     path('subtask/<int:pk>/', SubTaskDetailUpdateDeleteView.as_view(), name='subtask-detail-update-delete'),
     path('', include(router.urls)),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('token/cookie-refresh/', RefreshTokenView.as_view(), name='token-cookie-refresh'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
