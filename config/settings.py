@@ -47,12 +47,14 @@ INSTALLED_APPS = [
     'django_filters',
     'taskmanager',
     'drf_yasg',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ),
+        'taskmanager.authentication.CookieJWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'taskmanager.pagination.GlobalCursorPagination',
     'PAGE_SIZE': 5,
 }
