@@ -35,7 +35,7 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Task(models.Model):
-
+    last_notified_status = models.CharField(max_length=100, null=True, blank=True)
     owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='tasks_owned')
     title = models.CharField(max_length=100)
     description = models.TextField()

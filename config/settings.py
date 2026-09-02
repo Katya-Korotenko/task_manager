@@ -65,6 +65,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -109,6 +111,7 @@ LOGGING = {
                 'level': 'INFO',
                 'class': 'logging.StreamHandler',
                 'formatter': 'verbose',
+                'stream': open(1, 'w', encoding='utf-8', closefd=False),
             },
             'http_file': {
                 'level': 'INFO',
