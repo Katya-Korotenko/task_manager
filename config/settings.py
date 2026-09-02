@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import environ
 import os
+from datetime import timedelta
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -57,6 +58,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'taskmanager.pagination.GlobalCursorPagination',
     'PAGE_SIZE': 5,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 MIDDLEWARE = [
